@@ -51,30 +51,43 @@ const Index = () => {
 
       {/* Hero Section with Background Animation */}
       <section className="py-20 px-4 relative">
-        {/* Animated Planet Orbit Background */}
+        {/* Static Background Image */}
         <div className="absolute inset-0 overflow-hidden z-0">
-          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-            {/* Orbit rings */}
-            <div className="absolute w-96 h-96 border border-gray-800/50 rounded-full animate-spin" style={{ animationDuration: '20s' }}>
-              <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-blue-400 rounded-full shadow-lg shadow-blue-400/50"></div>
-            </div>
-            <div className="absolute w-80 h-80 border border-gray-700/40 rounded-full animate-spin" style={{ animationDuration: '15s', animationDirection: 'reverse' }}>
-              <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-purple-400 rounded-full shadow-lg shadow-purple-400/50"></div>
-            </div>
-            <div className="absolute w-64 h-64 border border-gray-600/30 rounded-full animate-spin" style={{ animationDuration: '10s' }}>
-              <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-green-400 rounded-full shadow-lg shadow-green-400/50"></div>
-            </div>
-          </div>
-        </div>
-
-        {/* Animated Image 1 */}
-        <div className="absolute top-1/4 left-1/4 transform -translate-x-1/2 -translate-y-1/2 opacity-20 z-0 animate-pulse">
           <img 
             src="/lovable-uploads/e505d322-5e34-48b1-a722-63ca2b0e9b43.png" 
             alt="Digital Pattern" 
-            className="w-96 h-96 object-contain animate-spin" 
-            style={{ animationDuration: '30s' }}
+            className="w-full h-full object-cover opacity-20"
           />
+        </div>
+
+        {/* Multiple Animated Planet Orbit Background */}
+        <div className="absolute inset-0 overflow-hidden z-1">
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            {/* Orbit ring 1 */}
+            <div className="absolute w-96 h-96 border border-gray-800/50 rounded-full animate-spin" style={{ animationDuration: '20s' }}>
+              <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-blue-400 rounded-full shadow-lg shadow-blue-400/50"></div>
+            </div>
+            
+            {/* Orbit ring 2 */}
+            <div className="absolute w-80 h-80 border border-gray-700/40 rounded-full animate-spin" style={{ animationDuration: '15s', animationDirection: 'reverse' }}>
+              <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-purple-400 rounded-full shadow-lg shadow-purple-400/50"></div>
+            </div>
+            
+            {/* Orbit ring 3 */}
+            <div className="absolute w-64 h-64 border border-gray-600/30 rounded-full animate-spin" style={{ animationDuration: '10s' }}>
+              <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-green-400 rounded-full shadow-lg shadow-green-400/50"></div>
+            </div>
+            
+            {/* Orbit ring 4 */}
+            <div className="absolute w-48 h-48 border border-gray-500/25 rounded-full animate-spin" style={{ animationDuration: '8s', animationDirection: 'reverse' }}>
+              <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1 h-1 bg-red-400 rounded-full shadow-lg shadow-red-400/50"></div>
+            </div>
+            
+            {/* Orbit ring 5 */}
+            <div className="absolute w-32 h-32 border border-gray-400/20 rounded-full animate-spin" style={{ animationDuration: '12s' }}>
+              <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-0.5 h-0.5 bg-yellow-400 rounded-full shadow-lg shadow-yellow-400/50"></div>
+            </div>
+          </div>
         </div>
 
         <div className="container mx-auto text-center relative z-10">
@@ -99,21 +112,21 @@ const Index = () => {
             size="lg"
             className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 text-lg"
           >
-            Get Started <ChevronRight className="ml-2 h-5 w-5" />
+            Become A Data Contributor <ChevronRight className="ml-2 h-5 w-5" />
           </Button>
         </div>
       </section>
 
-      {/* About Section with Image 2 */}
+      {/* About Section with Image 2 Background */}
       <section className="py-16 px-4 bg-gray-900/50 relative">
-        {/* Large Image 2 Background */}
+        {/* Large Background Image */}
         <div className="absolute inset-0 overflow-hidden">
           <img 
             src="/lovable-uploads/ef2f4f70-8c2f-4c79-990e-24e8a11ae4d7.png" 
             alt="Grid Pattern" 
-            className="w-full h-full object-cover opacity-30"
+            className="w-full h-full object-cover opacity-30 z-0"
           />
-          <div className="absolute inset-0 bg-black/60"></div>
+          <div className="absolute inset-0 bg-black/60 z-1"></div>
         </div>
         
         <div className="container mx-auto relative z-10">

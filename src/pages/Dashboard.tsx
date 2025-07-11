@@ -62,6 +62,26 @@ const Dashboard = () => {
     navigate("/");
   };
 
+  const handleWithdraw = () => {
+    const totalEarnings = submittedDataList.reduce((sum, data) => sum + (data.reward || 0), 0);
+    if (totalEarnings > 0) {
+      toast({
+        title: "Withdrawal Successful!",
+        description: `${totalEarnings} SERVE tokens have been withdrawn to your wallet.`,
+      });
+      // Reset rewards after withdrawal
+      setSubmittedDataList(prev => 
+        prev.map(item => ({ ...item, reward: 0 }))
+      );
+    } else {
+      toast({
+        title: "No rewards to withdraw",
+        description: "You need to have verified data to earn rewards.",
+        variant: "destructive"
+      });
+    }
+  };
+
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
@@ -386,6 +406,8 @@ const Dashboard = () => {
                         </div>
                         <p className="text-gray-400 text-sm mb-2">Node ID: {data.id}</p>
                         <p className="text-gray-300 text-sm mb-2">Category: {data.category}</p>
+                        <p className="text-gray-400 text-sm mb-2">Location: {data.location || 'Not specified'}</p>
+                        <p className="text-gray-400 text-sm mb-2">Description: {data.description || 'No description'}</p>
                         <p className="text-gray-400 text-sm mb-2">Submitted: {data.submittedAt.toLocaleDateString()}</p>
                         {data.mediaFile && (
                           <p className="text-gray-400 text-sm mb-2">
@@ -397,6 +419,11 @@ const Dashboard = () => {
                           <div className="flex items-center gap-2 mt-2">
                             <DollarSign className="h-4 w-4 text-green-400" />
                             <span className="text-green-400 text-sm">Reward: {data.reward} SERVE tokens</span>
+                          </div>
+                        )}
+                        {data.status === 'rejected' && (
+                          <div className="flex items-center gap-2 mt-2">
+                            <span className="text-red-400 text-sm">Reason: Data validation failed</span>
                           </div>
                         )}
                       </div>
@@ -435,6 +462,9 @@ const Dashboard = () => {
                           </div>
                           <p className="text-gray-400 text-sm mb-2">Node ID: {data.id}</p>
                           <p className="text-gray-300 text-sm mb-2">Category: {data.category}</p>
+                          <p className="text-gray-400 text-sm mb-2">Location: {data.location || 'Not specified'}</p>
+                          <p className="text-gray-400 text-sm mb-2">Description: {data.description || 'No description'}</p>
+                          <p className="text-gray-400 text-sm mb-2">Verified: {data.submittedAt.toLocaleDateString()}</p>
                           <p className="text-green-400 text-sm">
                             Reward: {data.reward} SERVE tokens
                           </p>
@@ -482,6 +512,18 @@ const Dashboard = () => {
                     </p>
                   </div>
                 </div>
+                
+                <div className="flex justify-center mb-6">
+                  <Button
+                    onClick={handleWithdraw}
+                    className="bg-green-600 hover:bg-green-700 text-white px-8 py-2"
+                    disabled={submittedDataList.reduce((sum, data) => sum + (data.reward || 0), 0) === 0}
+                  >
+                    <DollarSign className="h-4 w-4 mr-2" />
+                    Withdraw Tokens
+                  </Button>
+                </div>
+
                 {submittedDataList.length === 0 && (
                   <div className="text-center text-gray-400 py-8">
                     Submit and get your data validated to start earning SERVE tokens!
