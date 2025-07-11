@@ -46,6 +46,19 @@ const Dashboard = () => {
   const [submittedDataList, setSubmittedDataList] = useState<SubmittedData[]>([]);
 
   const handleLogout = () => {
+    // Clear any stored data and redirect to home
+    setFormData({
+      category: "",
+      title: "",
+      description: "",
+      location: "",
+      temperature: "",
+      humidity: "",
+      soilMoisture: "",
+      mediaFile: null
+    });
+    setSubmittedDataList([]);
+    setIsSubmitted(false);
     navigate("/");
   };
 
@@ -145,9 +158,6 @@ const Dashboard = () => {
             <span className="text-2xl font-bold">Serve Network</span>
           </div>
           <div className="flex items-center space-x-4">
-            <Badge className="bg-green-900/50 text-green-300 border-green-800">
-              Wallet Connected
-            </Badge>
             <Button
               onClick={handleLogout}
               variant="outline"
@@ -239,7 +249,7 @@ const Dashboard = () => {
 
                   <div className="space-y-2">
                     <Label className="text-white">Media Upload (Optional)</Label>
-                    <div className="border-2 border-dashed border-gray-700 rounded-lg p-6 text-center">
+                    <div className="border-2 border-dashed border-gray-700 rounded-lg p-6 text-center relative">
                       <Upload className="h-8 w-8 text-gray-400 mx-auto mb-2" />
                       <p className="text-gray-400 mb-2">Choose file or drag and drop</p>
                       {formData.mediaFile && (

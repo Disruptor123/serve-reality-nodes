@@ -34,22 +34,6 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-black text-white relative overflow-hidden">
-      {/* Animated Planet Orbit Background */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
-          {/* Orbit rings */}
-          <div className="absolute w-96 h-96 border border-gray-800/30 rounded-full animate-spin" style={{ animationDuration: '20s' }}>
-            <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-blue-400 rounded-full"></div>
-          </div>
-          <div className="absolute w-80 h-80 border border-gray-700/20 rounded-full animate-spin" style={{ animationDuration: '15s', animationDirection: 'reverse' }}>
-            <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-purple-400 rounded-full"></div>
-          </div>
-          <div className="absolute w-64 h-64 border border-gray-600/10 rounded-full animate-spin" style={{ animationDuration: '10s' }}>
-            <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1 h-1 bg-green-400 rounded-full"></div>
-          </div>
-        </div>
-      </div>
-
       {/* Header */}
       <header className="border-b border-gray-800 bg-black/50 backdrop-blur-sm sticky top-0 z-50 relative">
         <div className="container mx-auto px-4 py-4 flex items-center justify-between">
@@ -65,11 +49,37 @@ const Index = () => {
         </div>
       </header>
 
-      {/* Hero Section */}
-      <section className="py-20 px-4 relative z-10">
-        <div className="container mx-auto text-center">
+      {/* Hero Section with Background Animation */}
+      <section className="py-20 px-4 relative">
+        {/* Animated Planet Orbit Background */}
+        <div className="absolute inset-0 overflow-hidden z-0">
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
+            {/* Orbit rings */}
+            <div className="absolute w-96 h-96 border border-gray-800/50 rounded-full animate-spin" style={{ animationDuration: '20s' }}>
+              <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-3 h-3 bg-blue-400 rounded-full shadow-lg shadow-blue-400/50"></div>
+            </div>
+            <div className="absolute w-80 h-80 border border-gray-700/40 rounded-full animate-spin" style={{ animationDuration: '15s', animationDirection: 'reverse' }}>
+              <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-2 h-2 bg-purple-400 rounded-full shadow-lg shadow-purple-400/50"></div>
+            </div>
+            <div className="absolute w-64 h-64 border border-gray-600/30 rounded-full animate-spin" style={{ animationDuration: '10s' }}>
+              <div className="absolute top-0 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-1.5 h-1.5 bg-green-400 rounded-full shadow-lg shadow-green-400/50"></div>
+            </div>
+          </div>
+        </div>
+
+        {/* Animated Image 1 */}
+        <div className="absolute top-1/4 left-1/4 transform -translate-x-1/2 -translate-y-1/2 opacity-20 z-0 animate-pulse">
+          <img 
+            src="/lovable-uploads/e505d322-5e34-48b1-a722-63ca2b0e9b43.png" 
+            alt="Digital Pattern" 
+            className="w-96 h-96 object-contain animate-spin" 
+            style={{ animationDuration: '30s' }}
+          />
+        </div>
+
+        <div className="container mx-auto text-center relative z-10">
           <Badge className="mb-6 bg-blue-900/50 text-blue-300 border-blue-800">
-            Built for Fairness
+            Built For Fairness
           </Badge>
           
           <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-blue-400 via-purple-400 to-green-400 bg-clip-text text-transparent">
@@ -94,9 +104,19 @@ const Index = () => {
         </div>
       </section>
 
-      {/* About Section */}
-      <section className="py-16 px-4 bg-gray-900/50 relative z-10">
-        <div className="container mx-auto">
+      {/* About Section with Image 2 */}
+      <section className="py-16 px-4 bg-gray-900/50 relative">
+        {/* Large Image 2 Background */}
+        <div className="absolute inset-0 overflow-hidden">
+          <img 
+            src="/lovable-uploads/ef2f4f70-8c2f-4c79-990e-24e8a11ae4d7.png" 
+            alt="Grid Pattern" 
+            className="w-full h-full object-cover opacity-30"
+          />
+          <div className="absolute inset-0 bg-black/60"></div>
+        </div>
+        
+        <div className="container mx-auto relative z-10">
           <div className="max-w-4xl mx-auto text-center">
             <h2 className="text-3xl md:text-4xl font-bold mb-8 text-white">
               Bridging Real-World Data With Decentralized AI
@@ -109,52 +129,25 @@ const Index = () => {
       </section>
 
       {/* Features Section */}
-      <section className="py-20 px-4 relative" 
-        style={{
-          backgroundImage: `url('/lovable-uploads/e0b6db89-da20-4b85-925a-ef8085720516.png')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat'
-        }}>
-        <div className="absolute inset-0 bg-black/70"></div>
+      <section className="py-20 px-4 relative">
         <div className="container mx-auto relative z-10">
           <h2 className="text-3xl md:text-4xl font-bold text-center mb-16 text-white">
             Core Features
           </h2>
           
-          <div className="relative">
-            {/* Left side image */}
-            <div className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-1/4 opacity-20 z-0">
-              <img 
-                src="/lovable-uploads/376a6358-956c-4b5b-a800-9ca3955bcd89.png" 
-                alt="AI Agent" 
-                className="w-64 h-64 object-contain"
-              />
-            </div>
-            
-            {/* Right side image */}
-            <div className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-1/4 opacity-20 z-0">
-              <img 
-                src="/lovable-uploads/abef8a05-7feb-4751-9fe5-9768a68f81b4.png" 
-                alt="Decentralized Network" 
-                className="w-64 h-64 object-contain"
-              />
-            </div>
-            
-            <div className="grid md:grid-cols-3 gap-8 relative z-10">
-              {features.map((feature, index) => (
-                <Card key={index} className="bg-gray-900/80 border-gray-800 hover:border-gray-700 transition-all duration-300 backdrop-blur-sm">
-                  <CardHeader>
-                    <CardTitle className="text-white text-xl">{feature.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <CardDescription className="text-gray-400 text-base leading-relaxed">
-                      {feature.description}
-                    </CardDescription>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+          <div className="grid md:grid-cols-3 gap-8">
+            {features.map((feature, index) => (
+              <Card key={index} className="bg-gray-900/80 border-gray-800 hover:border-gray-700 transition-all duration-300 backdrop-blur-sm">
+                <CardHeader>
+                  <CardTitle className="text-white text-xl">{feature.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-gray-400 text-base leading-relaxed">
+                    {feature.description}
+                  </CardDescription>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </div>
       </section>
@@ -173,7 +166,7 @@ const Index = () => {
             size="lg"
             className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-4 text-lg"
           >
-            Connect Wallet & Start
+            Become A Data Contributor
           </Button>
         </div>
       </section>
