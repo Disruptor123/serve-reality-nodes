@@ -8,9 +8,11 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Upload, MapPin, Thermometer, Eye, CheckCircle, Clock, Award, LogOut, FileText, DollarSign } from "lucide-react";
+import { Upload, MapPin, Thermometer, Eye, CheckCircle, Clock, Award, LogOut, FileText, DollarSign, Database, Code2 } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
+import NodeDataPage from "@/components/NodeDataPage";
+import CodeGeneratorPage from "@/components/CodeGeneratorPage";
 
 interface SubmittedData {
   id: string;
@@ -115,7 +117,7 @@ const Dashboard = () => {
     setIsSubmitted(true);
     setShowPreview(false);
     
-    // Simulate verification after 5 seconds
+    // Simulate verification after 5 seconds - status changes from pending to verified
     setTimeout(() => {
       setSubmittedDataList(prev => 
         prev.map(item => 
@@ -169,6 +171,102 @@ const Dashboard = () => {
     }
   };
 
+  const getDetailedView = (data: SubmittedData) => (
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button variant="outline" size="sm" className="border-gray-600 text-white hover:bg-gray-800">
+          <Eye className="h-4 w-4 mr-2" />
+          View Details
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="bg-gray-900 border-gray-800 text-white max-w-2xl">
+        <DialogHeader>
+          <DialogTitle>{data.title}</DialogTitle>
+          <DialogDescription className="text-gray-400">
+            Complete submission details and metadata
+          </DialogDescription>
+        </DialogHeader>
+        <div className="space-y-4">
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <Label className="text-gray-300">Node ID</Label>
+              <p className="text-blue-400 font-mono text-sm">{data.id}</p>
+            </div>
+            <div>
+              <Label className="text-gray-300">Status</Label>
+              {getStatusBadge(data.status)}
+            </div>
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <Label className="text-gray-300">Category</Label>
+              <p className="text-white">{data.category}</p>
+            </div>
+            <div>
+              <Label className="text-gray-300">Submitted</Label>
+              <p className="text-white">{data.submittedAt.toLocaleString()}</p>
+            </div>
+          </div>
+          <div>
+            <Label className="text-gray-300">Description</Label>
+            <p className="text-white">{data.description || 'No description provided'}</p>
+          </div>
+          <div>
+            <Label className="text-gray-300">Location</Label>
+            <p className="text-white">{data.location || 'Not specified'}</p>
+          </div>
+          {(data.temperature || data.humidity || data.soilMoisture) && (
+            <div>
+              <Label className="text-gray-300">Sensor Data</Label>
+              <div className="grid grid-cols-3 gap-2 mt-2">
+                {data.temperature && (
+                  <div className="bg-gray-800 p-2 rounded">
+                    <p className="text-xs text-gray-400">Temperature</p>
+                    <p className="text-white">{data.temperature}°C</p>
+                  </div>
+                )}
+                {data.humidity && (
+                  <div className="bg-gray-800 p-2 rounded">
+                    <p className="text-xs text-gray-400">Humidity</p>
+                    <p className="text-white">{data.humidity}%</p>
+                  </div>
+                )}
+                {data.soilMoisture && (
+                  <div className="bg-gray-800 p-2 rounded">
+                    <p className="text-xs text-gray-400">Soil Moisture</p>
+                    <p className="text-white">{data.soilMoisture}%</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          )}
+          {data.mediaFile && (
+            <div>
+              <Label className="text-gray-300">Attached File</Label>
+              <div className="flex items-center gap-2 mt-1">
+                <FileText className="h-4 w-4 text-gray-400" />
+                <span className="text-white text-sm">{data.mediaFile.name}</span>
+              </div>
+            </div>
+          )}
+          {data.status === 'verified' && data.reward && (
+            <div className="bg-green-900/20 border border-green-800 rounded-lg p-3">
+              <div className="flex items-center gap-2">
+                <DollarSign className="h-4 w-4 text-green-400" />
+                <span className="text-green-400 font-medium">Reward Earned: {data.reward} SERVE tokens</span>
+              </div>
+            </div>
+          )}
+          {data.status === 'rejected' && (
+            <div className="bg-red-900/20 border border-red-800 rounded-lg p-3">
+              <span className="text-red-400">Status: Data validation failed</span>
+            </div>
+          )}
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+
   return (
     <div className="min-h-screen bg-black text-white">
       {/* Header */}
@@ -193,11 +291,13 @@ const Dashboard = () => {
 
       <div className="container mx-auto px-4 py-8">
         <Tabs defaultValue="submit" className="w-full">
-          <TabsList className="grid w-full grid-cols-4 bg-gray-900 mb-8">
+          <TabsList className="grid w-full grid-cols-6 bg-gray-900 mb-8">
             <TabsTrigger value="submit" className="data-[state=active]:bg-blue-600">Submit Data</TabsTrigger>
             <TabsTrigger value="mydata" className="data-[state=active]:bg-blue-600">My Data</TabsTrigger>
             <TabsTrigger value="validated" className="data-[state=active]:bg-blue-600">Validated Data</TabsTrigger>
             <TabsTrigger value="rewards" className="data-[state=active]:bg-blue-600">Rewards</TabsTrigger>
+            <TabsTrigger value="nodedata" className="data-[state=active]:bg-blue-600">Node Data</TabsTrigger>
+            <TabsTrigger value="codegen" className="data-[state=active]:bg-blue-600">Code Generator</TabsTrigger>
           </TabsList>
 
           <TabsContent value="submit">
@@ -400,32 +500,35 @@ const Dashboard = () => {
                   {submittedDataList.length > 0 ? (
                     submittedDataList.map((data) => (
                       <div key={data.id} className="border border-gray-700 rounded-lg p-4">
-                        <div className="flex items-center justify-between mb-2">
+                        <div className="flex items-center justify-between mb-3">
                           <h3 className="text-white font-medium">{data.title}</h3>
                           {getStatusBadge(data.status)}
                         </div>
-                        <p className="text-gray-400 text-sm mb-2">Node ID: {data.id}</p>
-                        <p className="text-gray-300 text-sm mb-2">Category: {data.category}</p>
-                        <p className="text-gray-400 text-sm mb-2">Location: {data.location || 'Not specified'}</p>
-                        <p className="text-gray-400 text-sm mb-2">Description: {data.description || 'No description'}</p>
-                        <p className="text-gray-400 text-sm mb-2">Submitted: {data.submittedAt.toLocaleDateString()}</p>
-                        {data.mediaFile && (
-                          <p className="text-gray-400 text-sm mb-2">
-                            <FileText className="h-4 w-4 inline mr-1" />
-                            File: {data.mediaFile.name}
-                          </p>
-                        )}
-                        {data.status === 'verified' && data.reward && (
-                          <div className="flex items-center gap-2 mt-2">
-                            <DollarSign className="h-4 w-4 text-green-400" />
-                            <span className="text-green-400 text-sm">Reward: {data.reward} SERVE tokens</span>
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm mb-3">
+                          <p className="text-gray-400">Node ID: <span className="text-blue-400 font-mono">{data.id}</span></p>
+                          <p className="text-gray-300">Category: {data.category}</p>
+                          <p className="text-gray-400">Location: {data.location || 'Not specified'}</p>
+                          <p className="text-gray-400">Submitted: {data.submittedAt.toLocaleDateString()}</p>
+                        </div>
+                        <p className="text-gray-300 text-sm mb-3">Description: {data.description || 'No description'}</p>
+                        
+                        <div className="flex items-center justify-between">
+                          <div className="flex items-center gap-4">
+                            {data.mediaFile && (
+                              <div className="flex items-center gap-1 text-gray-400 text-sm">
+                                <FileText className="h-4 w-4" />
+                                <span>{data.mediaFile.name}</span>
+                              </div>
+                            )}
+                            {data.status === 'verified' && data.reward && (
+                              <div className="flex items-center gap-1">
+                                <DollarSign className="h-4 w-4 text-green-400" />
+                                <span className="text-green-400 text-sm">{data.reward} SERVE</span>
+                              </div>
+                            )}
                           </div>
-                        )}
-                        {data.status === 'rejected' && (
-                          <div className="flex items-center gap-2 mt-2">
-                            <span className="text-red-400 text-sm">Reason: Data validation failed</span>
-                          </div>
-                        )}
+                          {getDetailedView(data)}
+                        </div>
                       </div>
                     ))
                   ) : (
@@ -453,21 +556,30 @@ const Dashboard = () => {
                       .filter(data => data.status === 'verified')
                       .map((data) => (
                         <div key={data.id} className="border border-green-800 rounded-lg p-4 bg-green-900/10">
-                          <div className="flex items-center justify-between mb-2">
+                          <div className="flex items-center justify-between mb-3">
                             <h3 className="text-white font-medium">{data.title}</h3>
                             <Badge className="bg-green-900/50 text-green-300 border-green-800">
                               <CheckCircle className="h-3 w-3 mr-1" />
                               Verified
                             </Badge>
                           </div>
-                          <p className="text-gray-400 text-sm mb-2">Node ID: {data.id}</p>
-                          <p className="text-gray-300 text-sm mb-2">Category: {data.category}</p>
-                          <p className="text-gray-400 text-sm mb-2">Location: {data.location || 'Not specified'}</p>
-                          <p className="text-gray-400 text-sm mb-2">Description: {data.description || 'No description'}</p>
-                          <p className="text-gray-400 text-sm mb-2">Verified: {data.submittedAt.toLocaleDateString()}</p>
-                          <p className="text-green-400 text-sm">
-                            Reward: {data.reward} SERVE tokens
-                          </p>
+                          <div className="grid grid-cols-1 md:grid-cols-2 gap-2 text-sm mb-3">
+                            <p className="text-gray-400">Node ID: <span className="text-blue-400 font-mono">{data.id}</span></p>
+                            <p className="text-gray-300">Category: {data.category}</p>
+                            <p className="text-gray-400">Location: {data.location || 'Not specified'}</p>
+                            <p className="text-gray-400">Verified: {data.submittedAt.toLocaleDateString()}</p>
+                          </div>
+                          <p className="text-gray-300 text-sm mb-3">Description: {data.description || 'No description'}</p>
+                          
+                          <div className="flex items-center justify-between">
+                            <div className="flex items-center gap-4">
+                              <div className="flex items-center gap-1">
+                                <DollarSign className="h-4 w-4 text-green-400" />
+                                <span className="text-green-400 text-sm">Reward: {data.reward} SERVE</span>
+                              </div>
+                            </div>
+                            {getDetailedView(data)}
+                          </div>
                         </div>
                       ))
                   ) : (
@@ -529,6 +641,40 @@ const Dashboard = () => {
                     Submit and get your data validated to start earning SERVE tokens!
                   </div>
                 )}
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="nodedata">
+            <Card className="bg-gray-900/50 border-gray-800">
+              <CardHeader>
+                <CardTitle className="text-white flex items-center gap-2">
+                  <Database className="h-5 w-5" />
+                  Node Data Viewer
+                </CardTitle>
+                <CardDescription className="text-gray-400">
+                  View your data as structured nodes with blockchain representation
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <NodeDataPage submittedDataList={submittedDataList} />
+              </CardContent>
+            </Card>
+          </TabsContent>
+
+          <TabsContent value="codegen">
+            <Card className="bg-gray-900/50 border-gray-800">
+              <CardHeader>
+                <CardTitle className="text-white flex items-center gap-2">
+                  <Code2 className="h-5 w-5" />
+                  AI Training Code Generator
+                </CardTitle>
+                <CardDescription className="text-gray-400">
+                  Generate machine learning training code from your verified data
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <CodeGeneratorPage submittedDataList={submittedDataList} />
               </CardContent>
             </Card>
           </TabsContent>
