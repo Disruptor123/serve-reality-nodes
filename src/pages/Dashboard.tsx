@@ -13,6 +13,8 @@ import { useToast } from "@/hooks/use-toast";
 import { useNavigate } from "react-router-dom";
 import NodeDataPage from "@/components/NodeDataPage";
 import CodeGeneratorPage from "@/components/CodeGeneratorPage";
+import { Copy } from "lucide-react";
+import { useEffect } from "react";
 
 interface SubmittedData {
   id: string;
@@ -46,7 +48,14 @@ const Dashboard = () => {
   const [nodeId, setNodeId] = useState("");
   const [showPreview, setShowPreview] = useState(false);
   const [submittedDataList, setSubmittedDataList] = useState<SubmittedData[]>([]);
+  const [walletAddress, setWalletAddress] = useState("");
 
+  useEffect(() => {
+    const stored = localStorage.getItem("solflarePublicKey");
+    if (stored) {
+      setWalletAddress(stored);
+    }
+  }, []);
   const handleLogout = () => {
     // Clear any stored data and redirect to home
     setFormData({
@@ -276,7 +285,7 @@ const Dashboard = () => {
             <span className="text-2xl font-bold">Serve Network</span>
           </div>
           <div className="flex items-center space-x-4">
-            <Button
+            {/* <Button
               onClick={handleLogout}
               variant="outline"
               size="sm"
@@ -284,7 +293,28 @@ const Dashboard = () => {
             >
               <LogOut className="h-4 w-4 mr-2" />
               Logout
+            </Button> */}
+             <span className="truncate max-w-[150px]">{walletAddress.slice(0, 4)}...{walletAddress.slice(-4)}</span>
+            <button
+              onClick={() => {
+                navigator.clipboard.writeText(walletAddress);
+                toast({ title: "Wallet address copied!" });
+              }}
+            >
+              <Copy className="w-4 h-4" />
+            </button>
+            <Button
+              className="border"
+              onClick={() => {
+                localStorage.removeItem("solflarePublicKey");
+                navigate("/");
+              }}
+              variant="ghost"
+              size="sm"
+            >
+              Disconnect
             </Button>
+
           </div>
         </div>
       </header>
