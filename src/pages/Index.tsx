@@ -1,4 +1,3 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,17 +12,32 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-
+import SolflareWalletAdapter from "@solflare-wallet/sdk"
 const Index = () => {
   const [isWalletConnected, setIsWalletConnected] = useState(false);
   const navigate = useNavigate();
 
-  const handleConnectWallet = () => {
-    // Simulate wallet connection
+  const handleConnectWallet = async () => {
+    try {
+    const solflare = new SolflareWalletAdapter();
+
+    // Connect to the wallet
+    await solflare.connect();
+
+    // Get public key
+    const publicKey = solflare.publicKey?.toString();
+    console.log("Wallet Connected:", publicKey);
+
+    // Optional: Save in state or localStorage
     setIsWalletConnected(true);
+    localStorage.setItem("solflarePublicKey", publicKey || "");
+
     // Redirect to dashboard
     navigate("/dashboard");
-  };
+  } catch (error) {
+    console.error("Solflare connection failed", error);
+  }
+};
 
   const features = [
     {
@@ -73,7 +87,7 @@ const Index = () => {
             onClick={handleConnectWallet}
             className="bg-blue-600 hover:bg-blue-700 text-white"
           >
-            Connect Wallet
+            {isWalletConnected ? "Connected ✅" : "Connect Wallet"}
           </Button>
         </div>
       </header>
